@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PS4 FW GoldHEN Host by GamerHack</title>
+    <title>تفعيل PS4</title>
     <style>
         * {
             margin: 0;
@@ -14,143 +14,122 @@
         html, body {
             width: 100vw;
             height: 100vh;
-            overflow: hidden; /* يمنع ظهور التمرير تماماً */
+            overflow: hidden;
+            background-color: #0b0c10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            direction: rtl;
             color: #ffffff;
         }
 
-        body {
-            /* مسار صورة الخلفية */
-            background: url('../img.jpg') no-repeat center center fixed;
-            background-size: cover;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            padding: 30px 20px;
-        }
-
-        /* طبقة تظليل سوداء خفيفة لإبراز النصوص */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.45);
-            z-index: 1;
-        }
-
-        .main-container {
+        /* حاوية اللوقو الرئيسية في المنتصف */
+        .logo-wrapper {
             position: relative;
-            z-index: 2;
-            width: 100%;
-            height: 100%;
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
+            width: 90%;
+            max-width: 550px;
         }
 
-        /* 1. العنوان العلوي */
-        .header-title {
+        /* اللوقو الخاص بك */
+        .logo-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.3));
+        }
+
+        /* المستطيل في منتصف اللوقو لعرض النصوص */
+        .status-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            background: rgba(0, 0, 0, 0.85);
+            border: 2px solid #00d2ff;
+            border-radius: 12px;
+            padding: 18px 10px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.5);
+        }
+
+        /* نصوص الحالة باللغة العربية */
+        .status-text {
             font-size: 1.4rem;
             font-weight: bold;
-            color: #ffffff;
-            text-shadow: 0px 2px 10px rgba(0, 0, 0, 0.9);
-            margin-top: 10px;
+            color: #00d2ff;
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.8);
+            line-height: 1.5;
         }
 
-        /* 2. نص الكاش بالمنتصف */
-        .status-box {
-            text-align: center;
+        /* لون حالة النجاح */
+        .success-text {
+            color: #00ff88 !important;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.8) !important;
+            border-color: #00ff88 !important;
         }
 
-        .status-text {
-            font-size: 2.2rem;
-            font-weight: bold;
-            color: #ffffff;
-            text-shadow: 0px 0px 15px rgba(0, 0, 0, 0.9);
+        /* لون حالة الفشل */
+        .error-text {
+            color: #ff4d4d !important;
+            text-shadow: 0 0 10px rgba(255, 77, 77, 0.8) !important;
+            border-color: #ff4d4d !important;
         }
-
-        /* 3. أسماء المطورين بالأسفل */
-        .special-thanks {
-            font-size: 1.1rem;
-            text-shadow: 0px 2px 8px rgba(0, 0, 0, 0.9);
-            margin-bottom: 15px;
-        }
-
-        .thanks-1 { color: #ff5555; font-weight: bold; }
-        .thanks-2 { color: #ffffff; font-weight: bold; }
-        .thanks-3 { color: #ff9933; font-weight: bold; }
-        .thanks-4 { color: #55ffff; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div class="overlay"></div>
-
-    <div class="main-container">
-
-        <!-- العنوان العلوي -->
-        <div class="header-title">
-            PS4 [5.05] 7.00 - 13.00 FW GoldHEN Host by GamerHack
+    <!-- حاوية اللوقو والنص -->
+    <div class="logo-wrapper">
+        <img src="../logo.png" alt="Logo" class="logo-img">
+        
+        <!-- المستطيل الأسود الداخلي للنصوص -->
+        <div class="status-overlay" id="box">
+            <div class="status-text" id="msgs">جاري التفعيل تلقائياً... 0%</div>
         </div>
-
-        <!-- نص التثبيت المباشر بالمنتصف -->
-        <div class="status-box">
-            <h1 class="status-text" id="msgs">Installing Offline Cache: 0%</h1>
-        </div>
-
-        <!-- أسماء المطورين في الأسفل -->
-        <div class="special-thanks">
-            Special Thanks to: 
-            <span class="thanks-1">@_AlAzif</span> 
-            <span class="thanks-2">ChendoChap</span> 
-            <span class="thanks-3">@Kameleonre_</span> 
-            <span class="thanks-4">SiSTR0</span>
-        </div>
-
     </div>
 
-    <!-- كود الجافا سكريبت للتحميل التلقائي وتحديث النسبة -->
+    <!-- كود التحكم بالنصوص والتثبيت -->
     <script>
         if (window.applicationCache) {
             var appCache = window.applicationCache;
+            var msgBox = document.getElementById('msgs');
 
-            // عند بدء التحقق من الملفات
             appCache.addEventListener('checking', function() {
-                document.getElementById('msgs').innerHTML = "Checking Offline Cache...";
+                msgBox.innerHTML = "جاري التفعيل تلقائياً...";
             }, false);
 
-            // عند بدء التحميل
             appCache.addEventListener('downloading', function() {
-                document.getElementById('msgs').innerHTML = "Installing Offline Cache: 0%";
+                msgBox.innerHTML = "جاري التفعيل تلقائياً: 0%";
             }, false);
 
-            // أثناء تحميل الملفات (تحديث النسبة المئوية تلقائياً)
             appCache.addEventListener('progress', function(e) {
                 if (e.lengthComputable && e.total > 0) {
                     var percent = Math.round((e.loaded / e.total) * 100);
-                    document.getElementById('msgs').innerHTML = "Installing Offline Cache: " + percent + "%";
+                    msgBox.innerHTML = "جاري التفعيل تلقائياً: " + percent + "%";
                 } else {
-                    document.getElementById('msgs').innerHTML = "Installing Offline Cache...";
+                    msgBox.innerHTML = "جاري التفعيل تلقائياً...";
                 }
             }, false);
 
-            // عند الانتهاء وتثبيت الكاش بنجاح
             appCache.addEventListener('cached', function() {
-                document.getElementById('msgs').innerHTML = "Offline Cache Installed Successfully!";
+                msgBox.className = "status-text success-text";
+                msgBox.innerHTML = "نجح التفعيل";
             }, false);
 
-            // إذا كانت الصفحة مخزنة مسبقاً ولا توجد تحديثات جديدة
             appCache.addEventListener('noupdate', function() {
-                document.getElementById('msgs').innerHTML = "Page Already Cached! (Offline Ready)";
+                msgBox.className = "status-text success-text";
+                msgBox.innerHTML = "نجح التفعيل";
             }, false);
 
-            // في حال حدوث خطأ أثناء التثبيت
+            // عند الفشل يظهر النص المطلق بالكامل
             appCache.addEventListener('error', function() {
-                document.getElementById('msgs').innerHTML = "Page Cached! (Offline Ready)";
+                msgBox.className = "status-text error-text";
+                msgBox.innerHTML = "فشل التفعيل يرجى اعاده تشغيل السوني والمحاوله مره اخرا";
             }, false);
         }
     </script>
