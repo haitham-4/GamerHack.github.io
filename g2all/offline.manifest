@@ -1,8 +1,19 @@
 CACHE MANIFEST
-# Version 1.0
+# Version 1.2
 
 index.html
 ../img.jpg
+goldhen_2.4b18.10.bin
+cache505.html
+cache700.html
+cache900.html
+cachecss.html
+cacheslopkit.html
+505.manifest
+700.manifest
+900.manifest
+css.manifest
+slopkit.manifest
 
 NETWORK:
 *
