@@ -1,7 +1,12 @@
 CACHE MANIFEST
-# Version 3.5 - Clean Cache
+# Version 7.0 - GoldHEN Full Fix
 
 index.html
+goldhen_2.4b18.10.bin
+webkit/int64.js
+webkit/rop.js
+webkit/kexploit.js
+webkit/webkit.js
 
 NETWORK:
 *
