@@ -68,7 +68,7 @@
 
         <div class="status-section">
             <div class="status-overlay state-blue" id="box">
-                <div class="status-text" id="msgs">جاري تحميل الصفحة...</div>
+                <div class="status-text" id="msgs">جاري فحص حالة الكاش...</div>
             </div>
         </div>
 
@@ -86,12 +86,6 @@
         </div>
     </div>
 
-    <!-- استدعاء ملفات ثغرة WebKit البرمجية -->
-    <script src="webkit/int64.js"></script>
-    <script src="webkit/rop.js"></script>
-    <script src="webkit/kexploit.js"></script>
-    <script src="webkit/webkit.js"></script>
-
     <script>
         var box = document.getElementById('box');
         var msgBox = document.getElementById('msgs');
@@ -101,28 +95,8 @@
             msgBox.innerHTML = text;
         }
 
-        function loadPayload() {
+        function runExploit() {
             setStatus('state-yellow', 'جاري التفعيل التلقائي...');
-            
-            // قراءة ملف القولد هين وتحميله في ذاكرة السوني
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'goldhen_2.4b18.10.bin', true);
-            xhr.responseType = 'arraybuffer';
-            xhr.onload = function(e) {
-                if (this.status == 200) {
-                    var payload = new Uint8Array(this.response);
-                    if (typeof launchPayload === 'function') {
-                        launchPayload(payload);
-                    } else if (typeof main === 'function') {
-                        main(payload);
-                    }
-                }
-            };
-            xhr.onerror = function() {
-                // التشغيل المباشر للثغرة
-                if (typeof main === 'function') main();
-            };
-            xhr.send();
         }
 
         if (window.applicationCache) {
@@ -132,23 +106,26 @@
                 if (e.lengthComputable && e.total > 0) {
                     var percent = Math.round((e.loaded / e.total) * 100);
                     setStatus('state-blue', 'جاري حفظ الكاش... ' + percent + '%');
+                } else {
+                    setStatus('state-blue', 'جاري تحميل الكاش أوفلاين...');
                 }
             }, false);
 
             appCache.addEventListener('cached', function() {
-                setStatus('state-green', 'تم حفظ الكاش بنجاح!');
-                setTimeout(loadPayload, 1200);
+                setStatus('state-green', 'تم حفظ الكاش بنجاح! يمكنك الآن إطفاء الإنترنت.');
+                setTimeout(runExploit, 2000);
             }, false);
 
             appCache.addEventListener('noupdate', function() {
-                loadPayload();
+                runExploit();
             }, false);
 
             appCache.addEventListener('error', function() {
-                loadPayload();
+                // التشغيل المباشر عند فتح الصفحة أوفلاين
+                runExploit();
             }, false);
         } else {
-            loadPayload();
+            runExploit();
         }
     </script>
 </body>
