@@ -1,19 +1,7 @@
 CACHE MANIFEST
-# Version 3.0 - Updated Layout
+# Version 3.5 - Clean Cache
 
 index.html
-../logo.png
-goldhen_2.4b18.10.bin
-cache505.html
-cache700.html
-cache900.html
-cachecss.html
-cacheslopkit.html
-505.manifest
-700.manifest
-900.manifest
-css.manifest
-slopkit.manifest
 
 NETWORK:
 *
