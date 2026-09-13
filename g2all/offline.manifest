@@ -1,8 +1,9 @@
 CACHE MANIFEST
-# Version 10.0 - Stable Offline Fix
+# Version 15.0 - Final FW 9.00 GoldHEN Fix
 
 index.html
 goldhen_2.4b18.10.bin
+cache900.html
 
 NETWORK:
 *
