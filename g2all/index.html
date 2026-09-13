@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تفعيل PS4</title>
+    <title>تفعيل PS4 - عالم الألعاب</title>
     <style>
         * {
             margin: 0;
@@ -15,85 +15,93 @@
             width: 100vw;
             height: 100vh;
             overflow: hidden;
-            background-color: #0b0c10;
+            background-color: #05070f;
             display: flex;
             justify-content: center;
             align-items: center;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             direction: rtl;
-            color: #ffffff;
         }
 
-        /* حاوية اللوقو الرئيسية في المنتصف */
-        .logo-wrapper {
+        /* الحاوية الرئيسية لملء الشاشة بالكامل */
+        .main-container {
             position: relative;
+            width: 100vw;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 90%;
-            max-width: 550px;
         }
 
-        /* اللوقو الخاص بك */
-        .logo-img {
+        /* جعل صورة بنر عالم الألعاب تغطي الشاشة بشكل تناسقي */
+        .banner-img {
             width: 100%;
-            height: auto;
+            height: 100%;
+            object-fit: contain; /* تظهر الصورة بأكبر حجم ممكن دون تشويه */
             display: block;
-            filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.3));
         }
 
-        /* المستطيل في منتصف اللوقو لعرض النصوص */
+        /* وضع النص في منتصف المستطيل المرسوم داخل الصورة تماماً */
         .status-overlay {
             position: absolute;
-            top: 50%;
+            top: 48.5%; /* محاذاة دقيقة لمنتصف المستطيل المرسوم في الصورة */
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 80%;
-            background: rgba(0, 0, 0, 0.85);
-            border: 2px solid #00d2ff;
-            border-radius: 12px;
-            padding: 18px 10px;
+            width: 55%;
             text-align: center;
-            box-shadow: 0 0 20px rgba(0, 210, 255, 0.5);
+            background: transparent; /* إزالة أي خلفية إضافية */
+            border: none;
+            box-shadow: none;
         }
 
-        /* نصوص الحالة باللغة العربية */
+        /* تنسيق النصوص العربية */
         .status-text {
-            font-size: 1.4rem;
+            font-size: 1.6rem;
             font-weight: bold;
             color: #00d2ff;
-            text-shadow: 0 0 10px rgba(0, 210, 255, 0.8);
-            line-height: 1.5;
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.9);
+            white-space: nowrap;
         }
 
-        /* لون حالة النجاح */
+        /* لون عند نجاح التفعيل */
         .success-text {
             color: #00ff88 !important;
-            text-shadow: 0 0 10px rgba(0, 255, 136, 0.8) !important;
-            border-color: #00ff88 !important;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.9) !important;
         }
 
-        /* لون حالة الفشل */
+        /* لون عند فشل التفعيل */
         .error-text {
             color: #ff4d4d !important;
-            text-shadow: 0 0 10px rgba(255, 77, 77, 0.8) !important;
-            border-color: #ff4d4d !important;
+            text-shadow: 0 0 10px rgba(255, 77, 77, 0.9) !important;
+            white-space: normal;
+            font-size: 1.1rem;
+            line-height: 1.4;
+        }
+
+        /* تجاوب الخط مع الشاشات الصغيرة والجوالات */
+        @media (max-width: 600px) {
+            .status-text {
+                font-size: 0.95rem;
+            }
+            .error-text {
+                font-size: 0.75rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- حاوية اللوقو والنص -->
-    <div class="logo-wrapper">
-        <img src="../logo.png" alt="Logo" class="logo-img">
-        
-        <!-- المستطيل الأسود الداخلي للنصوص -->
-        <div class="status-overlay" id="box">
+    <div class="main-container">
+        <!-- صورة بنر عالم الألعاب -->
+        <img src="../logo.png" alt="عالم الألعاب" class="banner-img">
+
+        <!-- النص بدون أي إطار إضافي ليتطابق مع إطار الصورة -->
+        <div class="status-overlay">
             <div class="status-text" id="msgs">جاري التفعيل تلقائياً... 0%</div>
         </div>
     </div>
 
-    <!-- كود التحكم بالنصوص والتثبيت -->
+    <!-- كود الجافاسكريبت للتحكم بالنصوص والتحميل -->
     <script>
         if (window.applicationCache) {
             var appCache = window.applicationCache;
@@ -126,7 +134,6 @@
                 msgBox.innerHTML = "نجح التفعيل";
             }, false);
 
-            // عند الفشل يظهر النص المطلق بالكامل
             appCache.addEventListener('error', function() {
                 msgBox.className = "status-text error-text";
                 msgBox.innerHTML = "فشل التفعيل يرجى اعاده تشغيل السوني والمحاوله مره اخرا";
