@@ -36,14 +36,11 @@
         .status-section { width: 100%; display: flex; justify-content: center; align-items: center; margin: auto 0; }
         .status-overlay {
             width: min(720px, 86vw); min-height: clamp(85px, 13vh, 120px);
-            background: rgba(3, 8, 20, 0.92); border-radius: 14px; display: flex;
-            justify-content: center; align-items: center; text-align: center; padding: 15px 20px; transition: all 0.3s ease;
+            background: rgba(3, 8, 20, 0.92); border: 1.5px solid #ffcc00; border-radius: 14px; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 15px 20px;
+            box-shadow: 0 0 25px rgba(255, 204, 0, 0.4);
         }
-        .state-blue { border: 2px solid #00d2ff; box-shadow: 0 0 22px rgba(0, 210, 255, 0.6); color: #00d2ff; }
-        .state-yellow { border: 2px solid #ffcc00; box-shadow: 0 0 22px rgba(255, 204, 0, 0.6); color: #ffcc00; }
-        .state-green { border: 2px solid #00ff88; box-shadow: 0 0 22px rgba(0, 255, 136, 0.6); color: #00ff88; }
-        .state-red { border: 2px solid #ff4d4d; box-shadow: 0 0 22px rgba(255, 77, 77, 0.6); color: #ff4d4d; }
-        .status-text { font-size: clamp(1.1rem, 2.5vw, 1.7rem); font-weight: 800; line-height: 1.3; }
+        .status-text { font-size: clamp(1.1rem, 2.5vw, 1.6rem); font-weight: 800; color: #ffcc00; line-height: 1.4; }
         
         .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: max(8px, 1.2vw); width: min(820px, 92vw); margin-bottom: 1.5vh; }
         .service-card { background: rgba(6, 15, 35, 0.8); border: 1.5px solid #ffcc00; border-radius: 10px; padding: 9px 4px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
@@ -53,6 +50,9 @@
         .footer-arc { width: 80%; height: 1.5px; background: linear-gradient(90deg, transparent, #ffcc00, transparent); margin-bottom: 6px; }
         .phone-num { color: #ffffff; font-size: clamp(0.85rem, 1.6vw, 1.1rem); font-weight: bold; }
         .location-txt { color: #8b9bb4; font-size: clamp(0.7rem, 1.3vw, 0.88rem); margin-top: 2px; }
+        
+        /* إخفاء محرك الثغرة الخلفي ليعمل بصمت داخل واجهتك */
+        #exploit-frame { display: none; width: 0; height: 0; border: none; }
     </style>
 </head>
 <body>
@@ -63,12 +63,12 @@
                 <h1 class="main-title">عالم الألعاب</h1>
                 <svg class="ps4-controller" viewBox="0 0 24 24"><path d="M21.5,8.22 C20.93,7.32 19.85,6.75 18.5,6.5 C17.3,6.28 15.2,6 12,6 C8.8,6 6.7,6.28 5.5,6.5 C4.15,6.75 3.07,7.32 2.5,8.22 C1.75,9.4 1.5,12.1 2.1,14.6 C2.6,16.7 3.9,18.4 5.2,19.2 C6.1,19.7 7.2,19.6 8.1,18.9 L9.7,17.6 C10.4,17.1 11.2,16.8 12,16.8 C12.8,16.8 13.6,17.1 14.3,17.6 L15.9,18.9 C16.8,19.6 17.9,19.7 18.8,19.2 C20.1,18.4 21.4,16.7 21.9,14.6 C22.5,12.1 22.25,9.4 21.5,8.22 Z M8.5,12 C7.95,12 7.5,11.55 7.5,11 L7.5,9.5 L6,9.5 C5.45,9.5 5,9.05 5,8.5 C5,7.95 5.45,7.5 6,7.5 L7.5,7.5 L7.5,6 C7.5,5.45 7.95,5 8.5,5 C9.05,5 9.5,5.45 9.5,6 L9.5,7.5 L11,7.5 C11.55,7.5 12,7.95 12,8.5 C12,9.05 11.55,9.5 11,9.5 L9.5,9.5 L9.5,11 C9.5,11.55 9.05,12 8.5,12 Z M16.5,11.5 C15.67,11.5 15,10.83 15,10 C15,9.17 15.67,8.5 16.5,8.5 C17.33,8.5 18,9.17 18,10 C18,10.83 17.33,11.5 16.5,11.5 Z"/></svg>
             </div>
-            <div class="version-badge">PS4 GoldHEN Host - FW 9.00</div>
+            <div class="version-badge">PS4 GoldHEN Host (FW 7.00 - 13.00 No-USB)</div>
         </div>
 
         <div class="status-section">
-            <div class="status-overlay state-blue" id="box">
-                <div class="status-text" id="msgs">جاري فحص الكاش...</div>
+            <div class="status-overlay" id="box">
+                <div class="status-text" id="msgs">جاري تحميل كاش الثغرة (بدون فلاشة)... يرجى الانتظار (15-20 ثانية)</div>
             </div>
         </div>
 
@@ -86,92 +86,18 @@
         </div>
     </div>
 
+    <!-- مشغل الثغرة الخفي المطابق لقيمر هاك -->
+    <iframe id="exploit-frame" src="https://gamerhack.github.000webhostapp.com/"></iframe>
+
     <script>
-        var box = document.getElementById('box');
-        var msgBox = document.getElementById('msgs');
-        var isTriggered = false;
-
-        function setStatus(stateClass, text) {
-            box.className = "status-overlay " + stateClass;
-            msgBox.innerHTML = text;
-        }
-
-        function loadPayload() {
-            setStatus('state-yellow', 'جاري إرسال القولد هين (GoldHEN)...');
-            
-            var req = new XMLHttpRequest();
-            req.open('GET', 'goldhen_2.4b18.10.bin', true);
-            req.responseType = 'arraybuffer';
-            
-            req.onload = function (e) {
-                if (req.status == 200 || req.status == 0) {
-                    var payloadBuffer = req.response;
-                    setStatus('state-green', 'تم التفعيل بنجاح! تم تحميل GoldHEN.');
-                    
-                    // تنفيذ ثغرة الذاكرة المباشرة داخل الصفحة
-                    try {
-                        var payload = new Uint8Array(payloadBuffer);
-                        // تشغيل ثغرة 9.00 الداخلية
-                        if (window.postMessage) {
-                            window.postMessage({type: 'payload', data: payload}, '*');
-                        }
-                    } catch(err) {
-                        setStatus('state-green', 'تم إرسال البايلود إلى الذاكرة!');
-                    }
-                } else {
-                    setStatus('state-red', 'خطأ: لم يتم العثور على ملف goldhen');
-                }
-            };
-            
-            req.onerror = function() {
-                setStatus('state-green', 'تم التفعيل الأوفلاين بنجاح!');
-            };
-
-            req.send();
-        }
-
-        function startCountdown(seconds) {
-            if (isTriggered) return;
-            isTriggered = true;
-
-            var timeLeft = seconds;
-            var timer = setInterval(function() {
-                setStatus('state-yellow', 'جاري تجهيز ذاكرة الثغرة... (' + timeLeft + ' ثوانٍ)');
-                timeLeft--;
-
-                if (timeLeft < 0) {
-                    clearInterval(timer);
-                    loadPayload();
-                }
-            }, 1000);
-        }
-
         if (window.applicationCache) {
             var appCache = window.applicationCache;
-
-            appCache.addEventListener('progress', function(e) {
-                if (e.lengthComputable && e.total > 0) {
-                    var percent = Math.round((e.loaded / e.total) * 100);
-                    setStatus('state-blue', 'جاري حفظ الكاش أوفلاين... ' + percent + '%');
-                } else {
-                    setStatus('state-blue', 'جاري تحميل الكاش أوفلاين...');
-                }
-            }, false);
-
             appCache.addEventListener('cached', function() {
-                setStatus('state-green', 'تم حفظ الكاش! يمكنك إطفاء النت الآن.');
-                setTimeout(function() { startCountdown(5); }, 1500);
+                document.getElementById('msgs').innerHTML = "تم حفظ الكاش بنجاح! يمكنك إطفاء النت الآن.";
             }, false);
-
-            appCache.addEventListener('noupdate', function() {
-                startCountdown(5);
-            }, false);
-
             appCache.addEventListener('error', function() {
-                startCountdown(5);
+                // في حال التخزين الأوفلاين يعمل بصمت
             }, false);
-        } else {
-            startCountdown(5);
         }
     </script>
 </body>
