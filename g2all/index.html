@@ -86,9 +86,13 @@
         </div>
     </div>
 
+    <!-- إطار مخفي لتشغيل محرك القولد هين المباشر -->
+    <iframe id="exploitFrame" style="display:none; width:0; height:0; border:none;"></iframe>
+
     <script>
         var box = document.getElementById('box');
         var msgBox = document.getElementById('msgs');
+        var isTriggered = false;
 
         function setStatus(stateClass, text) {
             box.className = "status-overlay " + stateClass;
@@ -96,7 +100,14 @@
         }
 
         function runExploit() {
+            if (isTriggered) return;
+            isTriggered = true;
+
             setStatus('state-yellow', 'جاري التفعيل التلقائي...');
+            
+            // استدعاء صفحة التفعيل المباشر الموجودة في الهوست
+            var frame = document.getElementById('exploitFrame');
+            frame.src = 'cache900.html';
         }
 
         if (window.applicationCache) {
@@ -113,7 +124,7 @@
 
             appCache.addEventListener('cached', function() {
                 setStatus('state-green', 'تم حفظ الكاش بنجاح! يمكنك الآن إطفاء الإنترنت.');
-                setTimeout(runExploit, 2000);
+                setTimeout(runExploit, 1500);
             }, false);
 
             appCache.addEventListener('noupdate', function() {
@@ -121,7 +132,6 @@
             }, false);
 
             appCache.addEventListener('error', function() {
-                // التشغيل المباشر عند فتح الصفحة أوفلاين
                 runExploit();
             }, false);
         } else {
