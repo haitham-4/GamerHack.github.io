@@ -5,265 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>عالم الألعاب - تفعيل PS4</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            user-select: none;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
         html, body {
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-            /* خلفية نايت قيمنق مع أشكال أزرار البلايستيشن بألوانها الأصلية */
+            width: 100vw; height: 100vh; overflow: hidden;
             background-color: #030712;
             background-image: 
                 radial-gradient(circle at 50% 40%, rgba(0, 210, 255, 0.16) 0%, transparent 70%),
                 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='130' height='130' viewBox='0 0 130 130'%3E%3Cg font-family='Arial, sans-serif' font-weight='900' font-size='24'%3E%3Ctext x='20' y='40' fill='rgba(0, 243, 255, 0.18)'%3E▲%3C/text%3E%3Ctext x='80' y='40' fill='rgba(255, 77, 77, 0.18)'%3E●%3C/text%3E%3Ctext x='20' y='100' fill='rgba(255, 115, 198, 0.18)'%3E■%3C/text%3E%3Ctext x='80' y='100' fill='rgba(90, 132, 255, 0.18)'%3E✖%3C/text%3E%3C/g%3E%3C/svg%3E");
-            font-family: 'Cairo', 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            direction: rtl;
-            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            direction: rtl; color: #ffffff;
         }
-
         .app-container {
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
+            width: 100vw; height: 100vh; display: flex;
+            flex-direction: column; justify-content: space-between; align-items: center;
             padding: 3vh 2vw 2vh 2vw;
-            position: relative;
         }
-
-        /* 1. قسم الشعار ويدين PS4 */
-        .header-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .title-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-            margin-bottom: 6px;
-        }
-
-        /* تصميم يد PS4 DualShock 4 */
-        .ps4-controller {
-            width: clamp(38px, 5vw, 56px);
-            height: clamp(38px, 5vw, 56px);
-            fill: #00d2ff;
-            filter: drop-shadow(0 0 10px rgba(0, 210, 255, 0.8));
-        }
-
+        .header-section { display: flex; flex-direction: column; align-items: center; }
+        .title-wrapper { display: flex; align-items: center; gap: 16px; }
+        .ps4-controller { width: clamp(38px, 5vw, 56px); height: clamp(38px, 5vw, 56px); fill: #00d2ff; filter: drop-shadow(0 0 10px rgba(0, 210, 255, 0.8)); }
         .main-title {
-            font-size: clamp(2.2rem, 5vw, 3.8rem);
-            font-weight: 900;
+            font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 900;
             background: linear-gradient(180deg, #ffffff 0%, #00e5ff 65%, #0088ff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             filter: drop-shadow(0 0 16px rgba(0, 210, 255, 0.75));
-            letter-spacing: 1px;
-            line-height: 1.2;
         }
-
         .version-badge {
-            background: rgba(3, 10, 25, 0.85);
-            border: 1.5px solid #ffcc00;
-            color: #ffcc00;
-            padding: 4px 20px;
-            border-radius: 20px;
-            font-size: clamp(0.75rem, 1.5vw, 0.95rem);
-            font-weight: bold;
-            box-shadow: 0 0 12px rgba(255, 204, 0, 0.3);
-            margin-top: 4px;
+            background: rgba(3, 10, 25, 0.85); border: 1.5px solid #ffcc00;
+            color: #ffcc00; padding: 4px 20px; border-radius: 20px; font-size: clamp(0.75rem, 1.5vw, 0.95rem); font-weight: bold; margin-top: 4px;
         }
-
-        /* 2. قسم المستطيل التفاعلي */
-        .status-section {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: auto 0;
-        }
-
+        .status-section { width: 100%; display: flex; justify-content: center; align-items: center; margin: auto 0; }
         .status-overlay {
-            width: min(720px, 86vw);
-            min-height: clamp(85px, 13vh, 120px);
-            background: rgba(3, 8, 20, 0.92);
-            border-radius: 14px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 15px 20px;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(8px);
+            width: min(720px, 86vw); min-height: clamp(85px, 13vh, 120px);
+            background: rgba(3, 8, 20, 0.92); border-radius: 14px; display: flex;
+            justify-content: center; align-items: center; text-align: center; padding: 15px 20px; transition: all 0.3s ease;
         }
-
-        .state-blue {
-            border: 2px solid #00d2ff;
-            box-shadow: 0 0 22px rgba(0, 210, 255, 0.6);
-            color: #00d2ff;
-        }
-
-        .state-yellow {
-            border: 2px solid #ffcc00;
-            box-shadow: 0 0 22px rgba(255, 204, 0, 0.6);
-            color: #ffcc00;
-        }
-
-        .state-green {
-            border: 2px solid #00ff88;
-            box-shadow: 0 0 22px rgba(0, 255, 136, 0.6);
-            color: #00ff88;
-        }
-
-        .state-red {
-            border: 2px solid #ff4d4d;
-            box-shadow: 0 0 22px rgba(255, 77, 77, 0.6);
-            color: #ff4d4d;
-        }
-
-        .status-text {
-            font-size: clamp(1.1rem, 2.5vw, 1.7rem);
-            font-weight: 800;
-            line-height: 1.3;
-            text-shadow: 0 0 10px currentColor;
-        }
-
-        /* 3. قسم أزرار الخدمات */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: max(8px, 1.2vw);
-            width: min(820px, 92vw);
-            margin-bottom: 1.5vh;
-        }
-
-        .service-card {
-            background: rgba(6, 15, 35, 0.8);
-            border: 1.5px solid #ffcc00;
-            border-radius: 10px;
-            padding: 9px 4px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
-        }
-
-        .service-icon {
-            width: clamp(22px, 3.5vw, 32px);
-            height: clamp(22px, 3.5vw, 32px);
-            fill: #00d2ff;
-            filter: drop-shadow(0 0 5px rgba(0, 210, 255, 0.5));
-        }
-
-        .service-title {
-            font-size: clamp(0.7rem, 1.3vw, 0.95rem);
-            font-weight: bold;
-            color: #ffffff;
-            white-space: nowrap;
-        }
-
-        /* 4. قسم الفوتر والمعلومات */
-        .footer-section {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .footer-arc {
-            width: 80%;
-            height: 1.5px;
-            background: linear-gradient(90deg, transparent, #ffcc00, transparent);
-            margin-bottom: 6px;
-        }
-
-        .phone-num {
-            color: #ffffff;
-            font-size: clamp(0.85rem, 1.6vw, 1.1rem);
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
-
-        .location-txt {
-            color: #8b9bb4;
-            font-size: clamp(0.7rem, 1.3vw, 0.88rem);
-            margin-top: 2px;
-        }
-
-        @media (max-width: 600px) {
-            .services-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+        .state-blue { border: 2px solid #00d2ff; box-shadow: 0 0 22px rgba(0, 210, 255, 0.6); color: #00d2ff; }
+        .state-yellow { border: 2px solid #ffcc00; box-shadow: 0 0 22px rgba(255, 204, 0, 0.6); color: #ffcc00; }
+        .state-green { border: 2px solid #00ff88; box-shadow: 0 0 22px rgba(0, 255, 136, 0.6); color: #00ff88; }
+        .state-red { border: 2px solid #ff4d4d; box-shadow: 0 0 22px rgba(255, 77, 77, 0.6); color: #ff4d4d; }
+        .status-text { font-size: clamp(1.1rem, 2.5vw, 1.7rem); font-weight: 800; line-height: 1.3; }
+        
+        .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: max(8px, 1.2vw); width: min(820px, 92vw); margin-bottom: 1.5vh; }
+        .service-card { background: rgba(6, 15, 35, 0.8); border: 1.5px solid #ffcc00; border-radius: 10px; padding: 9px 4px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+        .service-icon { width: clamp(22px, 3.5vw, 32px); height: clamp(22px, 3.5vw, 32px); fill: #00d2ff; }
+        .service-title { font-size: clamp(0.7rem, 1.3vw, 0.95rem); font-weight: bold; color: #ffffff; }
+        .footer-section { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .footer-arc { width: 80%; height: 1.5px; background: linear-gradient(90deg, transparent, #ffcc00, transparent); margin-bottom: 6px; }
+        .phone-num { color: #ffffff; font-size: clamp(0.85rem, 1.6vw, 1.1rem); font-weight: bold; }
+        .location-txt { color: #8b9bb4; font-size: clamp(0.7rem, 1.3vw, 0.88rem); margin-top: 2px; }
     </style>
 </head>
 <body>
-
     <div class="app-container">
-        
-        <!-- العنوان الرئيسي مع أيدي PS4 DualShock 4 الرسمية -->
         <div class="header-section">
             <div class="title-wrapper">
-                <!-- يد سوني 4 اليمين -->
-                <svg class="ps4-controller" viewBox="0 0 24 24">
-                    <path d="M21.5,8.22 C20.93,7.32 19.85,6.75 18.5,6.5 C17.3,6.28 15.2,6 12,6 C8.8,6 6.7,6.28 5.5,6.5 C4.15,6.75 3.07,7.32 2.5,8.22 C1.75,9.4 1.5,12.1 2.1,14.6 C2.6,16.7 3.9,18.4 5.2,19.2 C6.1,19.7 7.2,19.6 8.1,18.9 L9.7,17.6 C10.4,17.1 11.2,16.8 12,16.8 C12.8,16.8 13.6,17.1 14.3,17.6 L15.9,18.9 C16.8,19.6 17.9,19.7 18.8,19.2 C20.1,18.4 21.4,16.7 21.9,14.6 C22.5,12.1 22.25,9.4 21.5,8.22 Z M8.5,12 C7.95,12 7.5,11.55 7.5,11 L7.5,9.5 L6,9.5 C5.45,9.5 5,9.05 5,8.5 C5,7.95 5.45,7.5 6,7.5 L7.5,7.5 L7.5,6 C7.5,5.45 7.95,5 8.5,5 C9.05,5 9.5,5.45 9.5,6 L9.5,7.5 L11,7.5 C11.55,7.5 12,7.95 12,8.5 C12,9.05 11.55,9.5 11,9.5 L9.5,9.5 L9.5,11 C9.5,11.55 9.05,12 8.5,12 Z M16.5,11.5 C15.67,11.5 15,10.83 15,10 C15,9.17 15.67,8.5 16.5,8.5 C17.33,8.5 18,9.17 18,10 C18,10.83 17.33,11.5 16.5,11.5 Z"/>
-                </svg>
-
+                <svg class="ps4-controller" viewBox="0 0 24 24"><path d="M21.5,8.22 C20.93,7.32 19.85,6.75 18.5,6.5 C17.3,6.28 15.2,6 12,6 C8.8,6 6.7,6.28 5.5,6.5 C4.15,6.75 3.07,7.32 2.5,8.22 C1.75,9.4 1.5,12.1 2.1,14.6 C2.6,16.7 3.9,18.4 5.2,19.2 C6.1,19.7 7.2,19.6 8.1,18.9 L9.7,17.6 C10.4,17.1 11.2,16.8 12,16.8 C12.8,16.8 13.6,17.1 14.3,17.6 L15.9,18.9 C16.8,19.6 17.9,19.7 18.8,19.2 C20.1,18.4 21.4,16.7 21.9,14.6 C22.5,12.1 22.25,9.4 21.5,8.22 Z M8.5,12 C7.95,12 7.5,11.55 7.5,11 L7.5,9.5 L6,9.5 C5.45,9.5 5,9.05 5,8.5 C5,7.95 5.45,7.5 6,7.5 L7.5,7.5 L7.5,6 C7.5,5.45 7.95,5 8.5,5 C9.05,5 9.5,5.45 9.5,6 L9.5,7.5 L11,7.5 C11.55,7.5 12,7.95 12,8.5 C12,9.05 11.55,9.5 11,9.5 L9.5,9.5 L9.5,11 C9.5,11.55 9.05,12 8.5,12 Z M16.5,11.5 C15.67,11.5 15,10.83 15,10 C15,9.17 15.67,8.5 16.5,8.5 C17.33,8.5 18,9.17 18,10 C18,10.83 17.33,11.5 16.5,11.5 Z"/></svg>
                 <h1 class="main-title">عالم الألعاب</h1>
-
-                <!-- يد سوني 4 اليسار -->
-                <svg class="ps4-controller" viewBox="0 0 24 24">
-                    <path d="M21.5,8.22 C20.93,7.32 19.85,6.75 18.5,6.5 C17.3,6.28 15.2,6 12,6 C8.8,6 6.7,6.28 5.5,6.5 C4.15,6.75 3.07,7.32 2.5,8.22 C1.75,9.4 1.5,12.1 2.1,14.6 C2.6,16.7 3.9,18.4 5.2,19.2 C6.1,19.7 7.2,19.6 8.1,18.9 L9.7,17.6 C10.4,17.1 11.2,16.8 12,16.8 C12.8,16.8 13.6,17.1 14.3,17.6 L15.9,18.9 C16.8,19.6 17.9,19.7 18.8,19.2 C20.1,18.4 21.4,16.7 21.9,14.6 C22.5,12.1 22.25,9.4 21.5,8.22 Z M8.5,12 C7.95,12 7.5,11.55 7.5,11 L7.5,9.5 L6,9.5 C5.45,9.5 5,9.05 5,8.5 C5,7.95 5.45,7.5 6,7.5 L7.5,7.5 L7.5,6 C7.5,5.45 7.95,5 8.5,5 C9.05,5 9.5,5.45 9.5,6 L9.5,7.5 L11,7.5 C11.55,7.5 12,7.95 12,8.5 C12,9.05 11.55,9.5 11,9.5 L9.5,9.5 L9.5,11 C9.5,11.55 9.05,12 8.5,12 Z M16.5,11.5 C15.67,11.5 15,10.83 15,10 C15,9.17 15.67,8.5 16.5,8.5 C17.33,8.5 18,9.17 18,10 C18,10.83 17.33,11.5 16.5,11.5 Z"/>
-                </svg>
+                <svg class="ps4-controller" viewBox="0 0 24 24"><path d="M21.5,8.22 C20.93,7.32 19.85,6.75 18.5,6.5 C17.3,6.28 15.2,6 12,6 C8.8,6 6.7,6.28 5.5,6.5 C4.15,6.75 3.07,7.32 2.5,8.22 C1.75,9.4 1.5,12.1 2.1,14.6 C2.6,16.7 3.9,18.4 5.2,19.2 C6.1,19.7 7.2,19.6 8.1,18.9 L9.7,17.6 C10.4,17.1 11.2,16.8 12,16.8 C12.8,16.8 13.6,17.1 14.3,17.6 L15.9,18.9 C16.8,19.6 17.9,19.7 18.8,19.2 C20.1,18.4 21.4,16.7 21.9,14.6 C22.5,12.1 22.25,9.4 21.5,8.22 Z M8.5,12 C7.95,12 7.5,11.55 7.5,11 L7.5,9.5 L6,9.5 C5.45,9.5 5,9.05 5,8.5 C5,7.95 5.45,7.5 6,7.5 L7.5,7.5 L7.5,6 C7.5,5.45 7.95,5 8.5,5 C9.05,5 9.5,5.45 9.5,6 L9.5,7.5 L11,7.5 C11.55,7.5 12,7.95 12,8.5 C12,9.05 11.55,9.5 11,9.5 L9.5,9.5 L9.5,11 C9.5,11.55 9.05,12 8.5,12 Z M16.5,11.5 C15.67,11.5 15,10.83 15,10 C15,9.17 15.67,8.5 16.5,8.5 C17.33,8.5 18,9.17 18,10 C18,10.83 17.33,11.5 16.5,11.5 Z"/></svg>
             </div>
             <div class="version-badge">PS4 GoldHEN Host - FW 7.00 - 13.00</div>
         </div>
 
-        <!-- المستطيل التفاعلي -->
         <div class="status-section">
             <div class="status-overlay state-blue" id="box">
-                <div class="status-text" id="msgs">جاري تحميل الصفحة... 0%</div>
+                <div class="status-text" id="msgs">جاري تحميل الكاش... 0%</div>
             </div>
         </div>
 
-        <!-- الأزرار والخدمات -->
         <div class="services-grid">
-            <div class="service-card">
-                <svg class="service-icon" viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg>
-                <span class="service-title">صالة ألعاب</span>
-            </div>
-            <div class="service-card">
-                <svg class="service-icon" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                <span class="service-title">تحميل الألعاب</span>
-            </div>
-            <div class="service-card">
-                <svg class="service-icon" viewBox="0 0 24 24"><path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.6C.4 7 1 10 3 12c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.4-.4.4-1.1 0-1.3z"/></svg>
-                <span class="service-title">صيانة PS4</span>
-            </div>
-            <div class="service-card">
-                <svg class="service-icon" viewBox="0 0 24 24"><path d="M15 7.5V2H9v5.5l3 3 3-3zM7.5 9H2v6h5.5l3-3-3-3zM9 16.5V22h6v-5.5l-3-3-3 3zM16.5 9l-3 3 3 3H22V9h-5.5z"/></svg>
-                <span class="service-title">ملحقات سوني</span>
-            </div>
+            <div class="service-card"><svg class="service-icon" viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg><span class="service-title">صالة ألعاب</span></div>
+            <div class="service-card"><svg class="service-icon" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg><span class="service-title">تحميل الألعاب</span></div>
+            <div class="service-card"><svg class="service-icon" viewBox="0 0 24 24"><path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.6C.4 7 1 10 3 12c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.4-.4.4-1.1 0-1.3z"/></svg><span class="service-title">صيانة PS4</span></div>
+            <div class="service-card"><svg class="service-icon" viewBox="0 0 24 24"><path d="M15 7.5V2H9v5.5l3 3 3-3zM7.5 9H2v6h5.5l3-3-3-3zM9 16.5V22h6v-5.5l-3-3-3 3zM16.5 9l-3 3 3 3H22V9h-5.5z"/></svg><span class="service-title">ملحقات سوني</span></div>
         </div>
 
-        <!-- معلومات المحل -->
         <div class="footer-section">
             <div class="footer-arc"></div>
             <div class="phone-num">780621076</div>
             <div class="location-txt">الموقع: الشحر - شارع مسجد وبير</div>
         </div>
-
     </div>
 
     <script>
@@ -278,25 +98,16 @@
         if (window.applicationCache) {
             var appCache = window.applicationCache;
 
-            appCache.addEventListener('checking', function() {
-                setStatus('state-blue', 'جاري تحميل الصفحة...');
-            }, false);
-
-            appCache.addEventListener('downloading', function() {
-                setStatus('state-blue', 'جاري تحميل الصفحة... 0%');
-            }, false);
-
             appCache.addEventListener('progress', function(e) {
                 if (e.lengthComputable && e.total > 0) {
                     var percent = Math.round((e.loaded / e.total) * 100);
-                    setStatus('state-blue', 'جاري تحميل الصفحة... ' + percent + '%');
-                } else {
-                    setStatus('state-blue', 'جاري تحميل الصفحة...');
+                    setStatus('state-blue', 'جاري حفظ الكاش... ' + percent + '%');
                 }
             }, false);
 
             appCache.addEventListener('cached', function() {
-                startGoldhenActivation();
+                setStatus('state-green', 'تم حفظ الكاش بنجاح! يمكنك الآن استخدام الصفحة أوفلاين.');
+                setTimeout(startGoldhenActivation, 2000);
             }, false);
 
             appCache.addEventListener('noupdate', function() {
@@ -304,7 +115,13 @@
             }, false);
 
             appCache.addEventListener('error', function() {
-                setStatus('state-red', 'فشل التفعيل يرجى اعاده تشغيل السوني والمحاوله مره اخرا');
+                // في حالة وجود كاش سابق مخزن سيعمل أوفلاين ولن يظهر خطأ
+                if (navigator.onLine === false) {
+                    startGoldhenActivation();
+                } else {
+                    setStatus('state-yellow', 'جاري التفعيل التلقائي...');
+                    setTimeout(startGoldhenActivation, 1000);
+                }
             }, false);
         } else {
             startGoldhenActivation();
@@ -312,6 +129,8 @@
 
         function startGoldhenActivation() {
             setStatus('state-yellow', 'جاري التفعيل التلقائي...');
+            // إذا كان لديك ملف تنفيذي للثغرة داخل المجلد مثل goldhen_2.4b18.10.bin أو loader.js
+            // يتم استدعاؤه هنا
         }
     </script>
 </body>
