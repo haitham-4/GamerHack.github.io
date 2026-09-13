@@ -86,9 +86,6 @@
         </div>
     </div>
 
-    <!-- إطار مخفي لتشغيل محرك القولد هين المباشر -->
-    <iframe id="exploitFrame" style="display:none; width:0; height:0; border:none;"></iframe>
-
     <script>
         var box = document.getElementById('box');
         var msgBox = document.getElementById('msgs');
@@ -99,15 +96,24 @@
             msgBox.innerHTML = text;
         }
 
-        function runExploit() {
+        function startCountdown(seconds) {
             if (isTriggered) return;
             isTriggered = true;
 
-            setStatus('state-yellow', 'جاري التفعيل التلقائي...');
-            
-            // استدعاء صفحة التفعيل المباشر الموجودة في الهوست
-            var frame = document.getElementById('exploitFrame');
-            frame.src = 'cache900.html';
+            var timeLeft = seconds;
+            var timer = setInterval(function() {
+                setStatus('state-yellow', 'جاري تجهيز ذاكرة الثغرة... (' + timeLeft + ' ثوانٍ)');
+                timeLeft--;
+
+                if (timeLeft < 0) {
+                    clearInterval(timer);
+                    setStatus('state-green', 'جاري إرسال القولد هين الآن...');
+                    // التحويل المباشر لصفحة الثغرة كي تكتمل العملية 100%
+                    setTimeout(function() {
+                        window.location.href = 'cache900.html';
+                    }, 500);
+                }
+            }, 1000);
         }
 
         if (window.applicationCache) {
@@ -123,19 +129,19 @@
             }, false);
 
             appCache.addEventListener('cached', function() {
-                setStatus('state-green', 'تم حفظ الكاش بنجاح! يمكنك الآن إطفاء الإنترنت.');
-                setTimeout(runExploit, 1500);
+                setStatus('state-green', 'تم حفظ الكاش بنجاح! أطفئ النت الآن.');
+                setTimeout(function() { startCountdown(10); }, 1500);
             }, false);
 
             appCache.addEventListener('noupdate', function() {
-                runExploit();
+                startCountdown(10);
             }, false);
 
             appCache.addEventListener('error', function() {
-                runExploit();
+                startCountdown(10);
             }, false);
         } else {
-            runExploit();
+            startCountdown(10);
         }
     </script>
 </body>
