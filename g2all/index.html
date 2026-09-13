@@ -12,50 +12,52 @@
         }
 
         html, body {
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
+            width: 100%;
+            height: 100%;
             background-color: #05070f;
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             direction: rtl;
         }
 
-        /* حاوية الشاشة الكاملة */
-        .main-container {
+        /* حاوية العرض المتناسقة مع أبعاد السوني 16:9 */
+        .stage {
             position: relative;
             width: 100vw;
-            height: 100vh;
+            height: calc(100vw * 9 / 16);
+            max-height: 100vh;
+            max-width: calc(100vh * 16 / 9);
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* تمطيط صورة البنر لتملأ الشاشة بالكامل */
+        /* الصورة بحجمها الصحيح والدقيق بدون أي تشويه للبكسلات */
         .banner-img {
-            width: 100vw;
-            height: 100vh;
-            object-fit: fill; 
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
             display: block;
         }
 
-        /* المستطيل الأسود المطابق تماماً لإطار الصورة مع التوسيط العمودي والأفقي */
+        /* المستطيل التفاعلي مطابق لسنتر المستطيل في الصورة تماماً */
         .status-overlay {
             position: absolute;
-            top: 46.8%; /* مطابقة مكان المستطيل في تصميم الصورة */
+            top: 46.8%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 51.5%; /* العرض المطابق لإطار الصورة */
-            height: 14.5%; /* الارتفاع المطابق لإطار الصورة */
-            background: rgba(0, 0, 0, 0.95); /* يغطي المستطيل المرسوم في الصورة تماماً */
-            border-radius: 14px;
-            padding: 5px 10px;
+            width: 52.5%;
+            height: 16%;
+            background: rgba(5, 7, 15, 0.95);
+            border-radius: 12px;
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
+            padding: 5px 15px;
             transition: all 0.3s ease-in-out;
         }
 
@@ -87,35 +89,23 @@
             color: #ff4d4d;
         }
 
-        /* تنسيق النص الداخلي والتوسيط */
+        /* تنسيق الخط ليجلس في المنتصف تماماً وتناسب حجمه مع السوني */
         .status-text {
-            font-size: 1.4rem;
+            font-size: calc(0.8rem + 1.2vw);
             font-weight: bold;
-            line-height: 1.3;
+            line-height: 1.2;
             text-shadow: 0 0 8px currentColor;
             width: 100%;
-        }
-
-        /* تجاوب الخط على الجوالات في الوضع الطولي */
-        @media (max-width: 600px) and (orientation: portrait) {
-            .status-overlay {
-                width: 60%;
-                height: 10%;
-                top: 47%;
-            }
-            .status-text {
-                font-size: 0.9rem;
-            }
         }
     </style>
 </head>
 <body>
 
-    <div class="main-container">
-        <!-- صورة البنر ممتدة ملء الشاشة -->
+    <!-- المسرح الأساسي بأبعاد 16:9 الشاشة العريضة -->
+    <div class="stage">
         <img src="../logo.png" alt="عالم الألعاب" class="banner-img">
 
-        <!-- المستطيل في منتصف إطار الصورة بالضبط -->
+        <!-- المستطيل ذو الحواف التفاعلية والنص المتمركز -->
         <div class="status-overlay state-blue" id="box">
             <div class="status-text" id="msgs">جاري تحميل الصفحة... 0%</div>
         </div>
@@ -125,7 +115,7 @@
         var box = document.getElementById('box');
         var msgBox = document.getElementById('msgs');
 
-        // دالة تحديث لون الحواف والنص
+        // دالة تحديث الحالات والألوان
         function setStatus(stateClass, text) {
             box.className = "status-overlay " + stateClass;
             msgBox.innerHTML = text;
@@ -134,7 +124,7 @@
         if (window.applicationCache) {
             var appCache = window.applicationCache;
 
-            // 1. مرحلة التحميل والحفظ (حواف زرقاء)
+            // 1. عند التحميل والحفظ (حواف زرقاء)
             appCache.addEventListener('checking', function() {
                 setStatus('state-blue', 'جاري تحميل الصفحة...');
             }, false);
@@ -152,7 +142,7 @@
                 }
             }, false);
 
-            // 2. مرحلة بدء تفعيل القولدهين (حواف صفراء)
+            // 2. عند بدء التفعيل بعد التخزين أوفلاين (حواف صفراء)
             appCache.addEventListener('cached', function() {
                 startGoldhenActivation();
             }, false);
@@ -161,7 +151,7 @@
                 startGoldhenActivation();
             }, false);
 
-            // 3. مرحلة الفشل (حواف حمراء)
+            // 3. عند الفشل (حواف حمراء)
             appCache.addEventListener('error', function() {
                 setStatus('state-red', 'فشل التفعيل يرجى اعاده تشغيل السوني والمحاوله مره اخرا');
             }, false);
@@ -169,12 +159,12 @@
             startGoldhenActivation();
         }
 
-        // دالة بدء تفعيل القولدهين
+        // دالة بدء التفعيل
         function startGoldhenActivation() {
-            // أصفر أثناء بدء التفعيل
+            // أصفر أثناء التفعيل
             setStatus('state-yellow', 'جاري التفعيل التلقائي...');
 
-            // عند نجاح التفعيل من كود الثغرة يتم استدعاء:
+            // ملاحظة: عند نجاح ثغرة GoldHEN في ملفات الهوست يتم استدعاء:
             // setStatus('state-green', 'نجحت العملية');
         }
     </script>
